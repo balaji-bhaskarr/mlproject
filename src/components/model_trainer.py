@@ -16,6 +16,7 @@ from xgboost import XGBRegressor
 from src.exception import CustomException
 from src.logger import logging
 from src.utils import save_object, evaluate_models
+from src.pipeline.train_pipeline import TrainPipeline
 
 @dataclass
 class ModelTrainerConfig:
@@ -85,19 +86,13 @@ class ModelTrainer:
                 
             }
 
-            model_report:dict = evaluate_models(X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models=models, params=params)
-
-            best_model_score = max(sorted(model_report.values()))
-
-            best_model_name = list(model_report.keys())[
-                list(model_report.values()).index(best_model_score)
-            ]
-
-            best_model = models[best_model_name]
+            train_pipeline = TrainPipeline(X_train, y_train, X_test, y_test)   
+            best_model_name, best_model_score = train_pipeline.train(models=models, params=params)
+            best_model = models[best_model_name] 
 
             if best_model_score<0.6:
                 raise CustomException("No best model found")
-            logging.info('Best found model on both training and testing dataset')
+            logging.info('Best found model on testing dataset')
 
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
@@ -106,6 +101,7 @@ class ModelTrainer:
 
             predicted = best_model.predict(X_test)
             r2_square = r2_score(y_test, predicted)
+            logging.info(f'R2_score on best model {best_model_name} = {r2_square}')
             return r2_square
         
         except Exception as e:
