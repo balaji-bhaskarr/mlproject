@@ -1,7 +1,7 @@
 import os
 import sys
 from dataclasses import dataclass
-from catboost import CatBoostRegressor
+#from catboost import CatBoostRegressor
 from sklearn.ensemble import (
     AdaBoostRegressor,
     GradientBoostingClassifier,
@@ -11,7 +11,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from xgboost import XGBRegressor
+#from xgboost import XGBRegressor
 
 from src.exception import CustomException
 from src.logger import logging
@@ -42,8 +42,8 @@ class ModelTrainer:
                 "Linear Regression": LinearRegression(),
                 "K-Neighbors Classifier": KNeighborsClassifier(),
                 "Gradient Boosting": GradientBoostingClassifier(),
-                "XGBRegressor": XGBRegressor(),
-                "CatBoosting Regressor": CatBoostRegressor(verbose=False),
+                #"XGBRegressor": XGBRegressor(),
+                #"CatBoosting Regressor": CatBoostRegressor(verbose=False),
                 "AdaBoost Regressor": AdaBoostRegressor(),
             }
 
@@ -69,15 +69,15 @@ class ModelTrainer:
                 },
                 "Linear Regression":{},
                 "K-Neighbors Classifier":{},
-                "XGBRegressor":{
+                #"XGBRegressor":{
                     #'learning_rate':[.1,.01,.05,.001],
-                    'n_estimators': [8,16,32,64,128,256]
-                },
-                "CatBoosting Regressor":{
+                    #'n_estimators': [8,16,32,64,128,256]
+                #},
+                #"CatBoosting Regressor":{
                     #'depth': [6,8,10],
-                    'learning_rate': [0.01, 0.05, 0.1],
+                    #'learning_rate': [0.01, 0.05, 0.1],
                     #'iterations': [30, 50, 100]
-                },
+                #},
                 "AdaBoost Regressor":{
                     #'learning_rate':[.1,.01,0.5,.001],
                     #'loss':['linear','square','exponential'],
